@@ -8,9 +8,8 @@ const app = express();
 const adminRouter = require("./routes/admin");
 const shopRouter = require("./routes/shop");
 
-// const jsonParser = bodyParser.json();
-// app.use(jsonParser);
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/admin", adminRouter);
 app.use(shopRouter);
