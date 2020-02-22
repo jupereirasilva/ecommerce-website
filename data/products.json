@@ -1,1 +1,8 @@
-[{ "title": "Dune" }, { "title": "Dune II" }, { "title": "Dune III" }]
+[
+  {
+    "title": "Dune",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/d/de/Dune-Frank_Herbert_%281965%29_First_edition.jpg",
+    "description": "Dune is a 1965 science fiction novel by American author Frank Herbert.",
+    "price": "25.00"
+  }
+]
