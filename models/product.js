@@ -3,14 +3,14 @@ const path = require("path");
 
 const Cart = require("./cart");
 
-const product = path.join(
+const dataPath = path.join(
   path.dirname(process.mainModule.filename),
   "data",
   "products.json"
 );
 
 const getProductsFromFile = callback => {
-  fs.readFile(product, (error, fileData) => {
+  fs.readFile(dataPath, (error, fileData) => {
     if (error) {
       callback([]);
     } else {
@@ -36,13 +36,13 @@ module.exports = class Product {
         );
         const updatedProducts = [...products];
         updatedProducts[existingProductIndex] = this;
-        fs.writeFile(product, JSON.stringify(updatedProducts), err => {
+        fs.writeFile(dataPath, JSON.stringify(updatedProducts), err => {
           console.log(err);
         });
       } else {
         this.id = new Date().getTime().toString();
         products.push(this);
-        fs.writeFile(product, JSON.stringify(products), err => {
+        fs.writeFile(dataPath, JSON.stringify(products), err => {
           console.log(err);
         });
       }
@@ -53,7 +53,7 @@ module.exports = class Product {
     getProductsFromFile(products => {
       const product = products.find(prod => prod.id === id);
       const updatedProducts = products.filter(prod => prod.id !== id);
-      fs.writeFile(product, JSON.stringify(updatedProducts), error => {
+      fs.writeFile(dataPath, JSON.stringify(updatedProducts), error => {
         if (!error) {
           Cart.deleteProduct(id, product.price);
         }

@@ -7,7 +7,7 @@ block content
         li 
           p #{product.productData.title} (#{product.quantity})
           form(action="/cart-delete-item" method="POST")
-            input(type="hidden" value="product.productData.id" name="productId")
+            input(type="hidden" value=product.productData.id name="productId")
             button(type="submit").btn Delete
 
   else

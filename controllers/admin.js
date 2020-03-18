@@ -40,12 +40,13 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postEditProduct = (req, res, next) => {
+  const { productId, title, imageUrl, description, price } = req.body;
   const updatedProduct = new Product(
-    req.body.productId,
-    req.body.title,
-    req.body.imageUrl,
-    req.body.description,
-    req.body.price
+    productId,
+    title,
+    imageUrl,
+    description,
+    price
   );
   updatedProduct.save();
   res.redirect("/admin/products");
