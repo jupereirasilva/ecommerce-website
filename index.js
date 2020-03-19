@@ -4,6 +4,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const errorController = require("./controllers/error");
+require("dotenv").config();
+const db = require("./util/database");
 
 const app = express();
 
@@ -12,6 +14,15 @@ app.set("views", "views");
 
 const adminRouter = require("./routes/admin");
 const shopRouter = require("./routes/shop");
+
+//test
+db.execute("SELECT * FROM products")
+  .then(result => {
+    console.log(result[0], result[1]);
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
