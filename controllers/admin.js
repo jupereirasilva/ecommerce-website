@@ -9,15 +9,14 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  const product = new Product(
-    null,
-    req.body.title,
-    req.body.imageUrl,
-    req.body.description,
-    req.body.price
-  );
-  product.save();
-  res.redirect("/");
+  const { title, price, description, imageUrl } = req.body;
+  const product = new Product(null, title, price, description, imageUrl);
+  product
+    .save()
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -40,13 +39,13 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postEditProduct = (req, res, next) => {
-  const { productId, title, imageUrl, description, price } = req.body;
+  const { productId, title, price, description, imageUrl } = req.body;
   const updatedProduct = new Product(
     productId,
     title,
-    imageUrl,
+    price,
     description,
-    price
+    imageUrl
   );
   updatedProduct.save();
   res.redirect("/admin/products");
