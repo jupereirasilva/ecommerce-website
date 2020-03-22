@@ -14,9 +14,7 @@ app.set("view engine", "pug");
 app.set("views", "views");
 
 const adminRouter = require("./routes/admin");
-/*
 const shopRouter = require("./routes/shop");
-*/
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -32,9 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/admin", adminRouter);
-/*
 app.use(shopRouter);
-*/
 
 app.use(errorController.get404);
 
