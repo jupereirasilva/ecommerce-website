@@ -2,11 +2,11 @@ const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 require("dotenv").config();
 
 const errorController = require("./controllers/error");
-const mongoConnect = require("./util/database").mongoConnect;
 const User = require("./models/user");
 
 const app = express();
@@ -21,9 +21,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
-  User.findById("5e8380ec7c4b803c0866fdd7")
+  User.findById("5e8495af3e8146668b93d3d9")
     .then(user => {
-      req.user = new User(user.name, user.email, user.cart, user._id);
+      req.user = user;
       next();
     })
     .catch(err => console.log(err));
@@ -34,7 +34,22 @@ app.use(shopRouter);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
-  const port = process.env.PORT || 4000;
-  app.listen(port, () => console.log(`Listening on port ${port}!`));
-});
+mongoose
+  .connect(process.env.CONNECTION_STRING)
+  .then(result => {
+    User.findOne().then(user => {
+      if (!user) {
+        const user = new User({
+          name: "Juliana",
+          email: "test@test.com",
+          cart: {
+            items: []
+          }
+        });
+        user.save();
+      }
+    });
+    const port = process.env.PORT || 4000;
+    app.listen(port, () => console.log(`Listening on port ${port}!`));
+  })
+  .catch(err => console.log(err));
