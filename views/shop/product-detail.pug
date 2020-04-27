@@ -4,10 +4,12 @@ block content
   main.centered
     h1 #{product.title}
     hr
-    div
+    .image
       img(src=`${product.imageUrl}`, alt=`${product.title}`)
     h2 #{product.price}
     p #{product.description}
-    form(action="/cart", method="POST")
-      button(type="submit").btn Add to Cart
-      input(type="hidden", name="productId", value=`${product.id}`)
+    if isAuthenticated
+      form(action="/cart", method="POST")
+        input(type="hidden", name="_csrf", value=`${csrfToken}`)
+        button(type="submit").btn Add to Cart
+        input(type="hidden", name="productId", value=`${product._id}`)

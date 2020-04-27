@@ -4,23 +4,26 @@ block styles
   link(rel="stylesheet", href="/css/product.css")
 
 block content 
-  if prods.length > 0
-    .grid
-      each product in prods
-        article.card.product-item
-          header.card__header
-            h1.product__title #{product.title}
-          div.card__image
-            img(src=product.imageUrl, alt=product.title)
-          div.card__content
-            h2.product__price $#{product.price}
-            p.product__description #{product.description}
-          .card__actions
-          a(href=`/products/${product.id}`).btn Details
-          form(action="/cart", method="POST")
-            button(type="submit").btn Add to Cart
-            input(type="hidden", name="productId", value=`${product.id}`)
+  main
+    if prods.length > 0
+      .grid
+        each product in prods
+          article.card.product-item
+            header.card__header
+              h1.product__title #{product.title}
+            .card__image
+              img(src=product.imageUrl, alt=product.title)
+            .card__content
+              h2.product__price $#{product.price}
+              p.product__description #{product.description}
+            .card__actions
+              a(href=`/products/${product._id}`).btn Details
+              if isAuthenticated
+                form(action="/cart", method="POST")
+                  input(type="hidden", name="_csrf", value=`${csrfToken}`)
+                  button(type="submit").btn Add to Cart
+                  input(type="hidden", name="productId", value=`${product._id}`)
 
-  else
-    h1 No Products
+    else
+      h1 No Products
 
