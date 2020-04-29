@@ -7,19 +7,41 @@ block styles
 block content 
   main
     - var path = editing 
+    if errorMessage 
+      .user-message.user-message--error #{errorMessage}
     form.product-form(action = path ? "/admin/edit-product" : "/admin/add-product", method="POST")
       .form-control
         label(for="title") Title
-        input(type="text", name="title", value = path ? `${product.title}` : "")#title
+        input(
+          type="text", 
+          name="title", 
+          value = path || hasError ? `${product.title}` : "",
+          class=(`${validationErrors.find(err => err.param === "title")}` ? "invalid" : "")
+          )#title
       .form-control
         label(for="imageUrl") Image URL
-        input(type="text", name="imageUrl", value = path ? `${product.imageUrl}` : "")#imageUrl 
+        input(
+          type="text", 
+          name="imageUrl", 
+          value = path || hasError ? `${product.imageUrl}` : "",
+          class=(`${validationErrors.find(err => err.param === "imageUrl")}` ? "invalid" : "")
+          )#imageUrl 
       .form-control
         label(for="price") Price
-        input(type="number", name="price", step="0.01", value = path ? `${product.price}` : "")#price
+        input(
+          type="number", 
+          name="price", 
+          step="0.01", 
+          value = path || hasError ? `${product.price}` : "",
+          class=(`${validationErrors.find(err => err.param === "price")}` ? "invalid" : "")
+          )#price
       .form-control
         label(for="description") Description
-        textarea(name="description" rows="5")#description #{path ? `${product.description}` : ""}
+        textarea(
+          name="description",
+          rows="5",
+          class=(`${validationErrors.find(err => err.param === "description")}` ? "invalid" : "")
+          )#description #{path || hasError ? `${product.description}` : ""}
       if editing
         input(type="hidden", value=`${product._id}`, name="productId")
       input(type="hidden", name="_csrf", value=`${csrfToken}`)
